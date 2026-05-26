@@ -1,0 +1,10 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/cron/rescan/route": "app/api/cron/rescan/route.js",
+  "/api/report/[scanId]/pdf/route": "app/api/report/[scanId]/pdf/route.js",
+  "/api/scans/route": "app/api/scans/route.js",
+  "/api/report/[scanId]/route": "app/api/report/[scanId]/route.js",
+  "/api/scan/route": "app/api/scan/route.js",
+  "/api/stripe/webhook/route": "app/api/stripe/webhook/route.js",
+  "/page": "app/page.js"
+}

@@ -132,7 +132,7 @@ async function handleCheckoutSessionCompleted(
       .from('scans')
       .update({ status: 'failed' })
       .eq('id', scanId)
-      .catch((e) => console.error('Failed to mark scan as failed:', e))
+      .catch((e: unknown) => console.error('Failed to mark scan as failed:', e))
   }
 }
 
