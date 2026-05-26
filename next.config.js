@@ -1,6 +1,4 @@
-import type { NextConfig } from 'next'
-
-const config: NextConfig = {
+const config = {
   typescript: {
     strictNullChecks: true,
   },
