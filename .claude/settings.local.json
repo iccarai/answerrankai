@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(wc -l \"/c/Users/Richie Onions/answerrankai\"/*.tsx)"
-    ]
-  }
-}
