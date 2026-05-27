@@ -19,15 +19,13 @@ const PRICING = [
     name: "TSO Audit",
     price: "$297",
     period: "one time",
-    description: "A complete Total Search Optimization audit across SEO, AEO, AIO, and GEO. Know exactly where you stand on every search surface - and exactly what to fix.",
+    description: "See your AI Visibility Score across all four platforms. Know where you stand and what's costing you visibility.",
     features: [
-      "Full technical SEO audit (crawl, Core Web Vitals, indexing)",
-      "AEO - featured snippet and voice search readiness",
-      "AIO - Google AI Overviews eligibility check",
-      "GEO - AI Visibility Score across 4 platforms",
-      "Up to 3 competitor comparisons",
-      "Prioritized TSO Fix List (5–10 items)",
-      "Downloadable branded PDF report",
+      "Your AI Visibility Score (0-100)",
+      "Platform-by-platform breakdown",
+      "Competitor comparison",
+      "Clear recommendations",
+      "Downloadable branded report",
     ],
     cta: "Get My TSO Audit",
     highlight: false,
@@ -39,15 +37,14 @@ const PRICING = [
     name: "Done-For-You TSO",
     price: "$1,497",
     period: "per month",
-    description: "We execute your entire TSO Fix List every month. Technical fixes, content restructures, AI citation signals, schema, llms.txt, directory submissions - all handled.",
+    description: "We optimize your website and business profile across all platforms so you're cited more often, in more instances, on more platforms.",
     features: [
-      "Everything in TSO Audit, re-run monthly",
-      "Technical SEO fixes implemented",
-      "AEO content restructures monthly",
-      "AIO optimization - E-E-A-T and snippet targeting",
-      "GEO - llms.txt, schema, Bing indexing, directories",
-      "Monthly PDF report delivered to your inbox",
-      "Score improvement - or we keep working",
+      "Monthly visibility optimization",
+      "SEO, AEO, AIO, and GEO covered",
+      "Platform-specific citations",
+      "Monthly progress report",
+      "Hands-on optimization",
+      "Ongoing visibility growth",
     ],
     cta: "Book a Discovery Call",
     highlight: true,
@@ -171,27 +168,33 @@ const GLOBAL_STYLES = `
   }
 
   @media (max-width: 640px) {
+    * { box-sizing: border-box; }
+
     [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: 1fr !important; gap: 12px !important; }
     [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; overflow-x: hidden !important; }
+    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; overflow-x: hidden !important; }
 
     [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
     [style*="padding: 48px"] { padding: 24px 16px !important; }
     [style*="padding: 96px 24px"] { padding: 48px 16px !important; }
-    [style*="maxWidth: 960"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 1200"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 680"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 620"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 560"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 580"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 520"] { max-width: 100% !important; padding: 0 16px !important; }
-    [style*="maxWidth: 760"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 960"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 1200"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 680"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 620"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 560"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 580"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 520"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 760"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
 
     [style*="gap: 80"] { gap: 32px !important; }
     [style*="gap: 64"] { gap: 24px !important; }
     [style*="gap: 48"] { gap: 20px !important; }
     [style*="gap: 40"] { gap: 16px !important; }
+
+    section { overflow-x: hidden !important; }
+    div[style*="display: flex"] { overflow-x: hidden !important; }
+    div[style*="display: grid"] { overflow-x: hidden !important; }
   }
 
   @media (max-width: 480px) {
@@ -269,6 +272,15 @@ const GLOBAL_STYLES = `
     footer > div { flex-direction: column !important; align-items: flex-start !important; }
   }
   .ar-footer-link:hover { color: #fff !important; }
+
+  @media (max-width: 768px) {
+    body, html { width: 100vw !important; overflow-x: hidden !important; }
+  }
+
+  @media (max-width: 640px) {
+    body, html { width: 100% !important; overflow-x: hidden !important; max-width: 100vw !important; }
+    div[style*="minHeight: 100vh"] { width: 100% !important; overflow-x: hidden !important; }
+  }
 
   .ar-guarantee-badge {
     display: flex; align-items: flex-start; gap: 10px;
