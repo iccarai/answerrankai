@@ -541,7 +541,7 @@ export default function AnswerRankLanding() {
                 background: "#e8ff4a", color: "#000", fontSize: 16, fontWeight: 500,
                 padding: "16px 32px", borderRadius: 99,
               }}>Get My TSO Audit - $297</a>
-              <a href="#" className="ar-sans" style={{
+              <a href="/report-preview" className="ar-sans" style={{
                 border: "1px solid #2a2a2a", color: "#aaa", fontSize: 16, fontWeight: 300,
                 padding: "16px 32px", borderRadius: 99,
               }}>See a Sample Report</a>
