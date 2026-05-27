@@ -124,6 +124,7 @@ const GLOBAL_STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100% !important; height: 100% !important; overflow-x: hidden !important; }
   html { scroll-behavior: smooth; }
   a { text-decoration: none; color: inherit; }
   button { background: none; border: none; cursor: pointer; }
@@ -161,40 +162,39 @@ const GLOBAL_STYLES = `
 
   /* Mobile Responsive */
   @media (max-width: 768px) {
-    body { font-size: 14px; }
+    body { font-size: 14px; width: 100vw !important; overflow-x: hidden !important; }
     [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
     [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
     [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 16px !important; }
+    section { width: 100% !important; overflow-x: hidden !important; }
   }
 
   @media (max-width: 640px) {
-    * { box-sizing: border-box; }
+    body { width: 100% !important; overflow-x: hidden !important; }
 
     [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: 1fr !important; gap: 12px !important; }
     [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; overflow-x: hidden !important; }
-    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; overflow-x: hidden !important; }
+    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; }
 
     [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
     [style*="padding: 48px"] { padding: 24px 16px !important; }
     [style*="padding: 96px 24px"] { padding: 48px 16px !important; }
-    [style*="maxWidth: 960"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 1200"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 680"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 620"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 560"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 580"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 520"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
-    [style*="maxWidth: 760"] { max-width: 100% !important; padding: 0 16px !important; overflow-x: hidden !important; }
+    [style*="maxWidth: 960"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 1200"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 680"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 620"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 560"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 580"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 520"] { max-width: calc(100% - 32px) !important; }
+    [style*="maxWidth: 760"] { max-width: calc(100% - 32px) !important; }
 
     [style*="gap: 80"] { gap: 32px !important; }
     [style*="gap: 64"] { gap: 24px !important; }
     [style*="gap: 48"] { gap: 20px !important; }
     [style*="gap: 40"] { gap: 16px !important; }
 
-    section { overflow-x: hidden !important; }
-    div[style*="display: flex"] { overflow-x: hidden !important; }
-    div[style*="display: grid"] { overflow-x: hidden !important; }
+    section { width: 100% !important; overflow-x: hidden !important; }
   }
 
   @media (max-width: 480px) {
@@ -272,15 +272,6 @@ const GLOBAL_STYLES = `
     footer > div { flex-direction: column !important; align-items: flex-start !important; }
   }
   .ar-footer-link:hover { color: #fff !important; }
-
-  @media (max-width: 768px) {
-    body, html { width: 100vw !important; overflow-x: hidden !important; }
-  }
-
-  @media (max-width: 640px) {
-    body, html { width: 100% !important; overflow-x: hidden !important; max-width: 100vw !important; }
-    div[style*="minHeight: 100vh"] { width: 100% !important; overflow-x: hidden !important; }
-  }
 
   .ar-guarantee-badge {
     display: flex; align-items: flex-start; gap: 10px;
