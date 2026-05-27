@@ -56,74 +56,74 @@ const SENTIMENT_DATA = [
   {
     platform: "ChatGPT",
     positive: 20, neutral: 55, negative: 25,
-    note: "When mentioned, descriptions reference limited online presence.",
+    note: "Pulls from Bing + web crawl. Mentions your business but with limited context about services.",
   },
   {
     platform: "Perplexity",
-    positive: 0, neutral: 40, negative: 60,
-    note: "Community sources on Reddit are sparse. Competitor reviews dominate.",
+    positive: 30, neutral: 45, negative: 25,
+    note: "Community sources and recent reviews weighted heavily. One negative Reddit thread is influencing perception.",
   },
   {
     platform: "Gemini",
     positive: 35, neutral: 50, negative: 15,
-    note: "Google Business Profile data is being read — some positive signals.",
+    note: "Google Business Profile is being indexed. You get mentioned for some queries but not your strongest keywords.",
   },
   {
     platform: "Google AI",
-    positive: 30, neutral: 45, negative: 25,
-    note: "Content indexed but ranking too low to trigger AI Overviews citations.",
+    positive: 25, neutral: 50, negative: 25,
+    note: "Your content is indexed but competing against 3 higher-authority sources. You need answer-first content to rank.",
   },
 ];
 
 const FIX_ITEMS = [
   {
     priority: 1,
-    tag: "High Impact",
-    tagColor: "#ff6b6b",
-    title: "Claim and fully optimize your Bing Places listing",
-    why: "ChatGPT retrieves real-time information through Bing, not Google. A missing or thin Bing Places listing means ChatGPT has almost nothing to pull when someone asks for a chiropractor in Edmonton. This is the fastest gap to close.",
+    tag: "SEO + GEO",
+    tagColor: "#10b981",
+    title: "Fix critical on-page SEO and claim all business directories",
+    why: "Your site has multiple Core Web Vitals failures (LCP 4.2s, CLS 0.28). Google and AI engines deprioritize slow, unstable sites. Simultaneously, you're listed on 1 of 4 key directories competitors use. Fixing SEO + claiming directories speeds up rankings across all channels.",
   },
   {
     priority: 2,
-    tag: "High Impact",
-    tagColor: "#ff6b6b",
-    title: "Publish a FAQ page structured for AI citation",
-    why: "AI platforms prioritize answer-first content. A page titled 'Chiropractic Care in Edmonton — Common Questions' with 10 question H2s and direct 2–3 sentence answers gives every AI platform a structured source to pull from.",
+    tag: "AEO",
+    tagColor: "#8b5cf6",
+    title: "Restructure your Services page for featured snippets and voice search",
+    why: "Your top keywords don't appear in featured snippets or voice search results. Restructuring with H2 questions, short answer paragraphs, and comparison tables triggers AI answer selection. This lifts AEO score and supports GEO visibility.",
   },
   {
     priority: 3,
-    tag: "High Impact",
-    tagColor: "#ff6b6b",
-    title: "Address the three review sources shaping your AI sentiment",
-    why: "Perplexity is pulling sentiment from RateMDs, Google Reviews, and a local forum thread from 2023. The forum thread contains one negative post that is disproportionately influencing your Perplexity sentiment score.",
+    tag: "AIO + GEO",
+    tagColor: "#3b82f6",
+    title: "Create answer-first content for your top 12 search queries",
+    why: "Google AI and ChatGPT both source from pages that answer the question immediately (not buried). Create a 'FAQ' or 'How-To' page for your 12 most-searched queries with direct 2–3 sentence answers at the top. This becomes citable source material for all AI platforms.",
   },
   {
     priority: 4,
-    tag: "Medium Impact",
-    tagColor: "#ffcc44",
-    title: "Add fact-dense statistics to your About and Services pages",
-    why: "Your competitor's site references specific outcome data: '9 in 10 patients report improvement within 3 visits.' AI engines treat fact-dense content as more authoritative. A single statistics-forward rewrite of your Services page would shift citation preference.",
+    tag: "GEO",
+    tagColor: "#e8ff4a",
+    title: "Optimize your Bing Business Profile and claim your Google Business Profile completely",
+    why: "ChatGPT pulls business info from Bing (not Google). Your Bing profile is missing 6 key fields. Gemini and Google AI pull from your Google Business Profile. Both are incomplete. Full optimization here is the fastest visibility win across all platforms.",
   },
   {
     priority: 5,
-    tag: "Medium Impact",
+    tag: "AEO + GEO",
     tagColor: "#ffcc44",
-    title: "Build a presence in Edmonton-specific Reddit threads",
-    why: "Perplexity heavily weights community content. r/Edmonton has active threads about local healthcare recommendations. A pattern of genuine, helpful participation — not promotion — creates citable community signal over 60–90 days.",
+    title: "Address the sentiment sources influencing your AI reputation",
+    why: "Your sentiment score is dragged down by 2 one-star reviews on RateMDs and a single Reddit comment. While these are hard to remove, generating 3–5 recent 5-star reviews shifts the sentiment weight. Newer reviews carry more algorithmic weight in AI platforms.",
   },
   {
     priority: 6,
-    tag: "Medium Impact",
+    tag: "AIO + GEO",
     tagColor: "#ffcc44",
-    title: "Submit to the 4 industry directories your competitors are listed on",
-    why: "Alignment Chiropractic (score: 71) is listed on Healthgrades, RateMDs, ChiroDirectory, and the Alberta Chiropractic Association member directory. You appear on one. AI platforms cross-reference directory consistency as a trust signal.",
+    title: "Add LocalBusiness + FAQPage structured data to your website",
+    why: "Structured data tells AI crawlers exactly what you do, where you are, and how to cite you. Without it, AI must guess from unstructured text — and often gets it wrong or skips you. This is foundational for all four TSO channels.",
   },
   {
     priority: 7,
-    tag: "Foundational",
+    tag: "GEO",
     tagColor: "#888",
-    title: "Add LocalBusiness and FAQPage structured data to your website",
-    why: "Structured data makes your business machine-readable for AI crawlers. Without it, AI must infer your location, hours, services, and specializations from unstructured text — and often gets it wrong or skips you entirely.",
+    title: "Build community signal on local Reddit and Facebook groups",
+    why: "Perplexity and Google AI heavily weight community discussion. Genuine, helpful participation in r/YourCity and local Facebook groups (over 60–90 days) creates citable signals that all platforms recognize as local authority.",
   },
 ];
 
@@ -321,7 +321,7 @@ function CompetitorMatrix() {
         border: "1px solid rgba(255,107,107,0.15)", borderRadius: 12,
       }}>
         <p className="ar-sans" style={{ color: "#ff6b6b", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-          <strong>Key gap:</strong> Alignment Chiropractic appears in AI answers 4.7× more often than Peak Performance across all platforms. Their ChatGPT score of 82 reflects strong Bing indexing and structured directory coverage.
+          <strong>Your TSO gap:</strong> Alignment Chiropractic appears in AI answers 4.7× more often across all four platforms. They're optimized for TSO — complete Bing + Google profiles, structured data, answer-first content, and directory listings. You're strong in one channel but underdeveloped across the others.
         </p>
       </div>
     </div>
@@ -358,8 +358,8 @@ function SentimentBreakdown() {
         border: "1px solid rgba(232,255,74,0.15)", borderRadius: 12,
       }}>
         <p className="ar-sans" style={{ color: "#aaa", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-          <strong style={{ color: "#e8ff4a" }}>Citation sources driving your sentiment:</strong>{" "}
-          RateMDs (3 reviews, 3.8★), Google Business Profile (12 reviews, 4.6★), r/Edmonton thread — 'Best chiropractor in Edmonton?' (2023, mentions competitor twice, not you).
+          <strong style={{ color: "#e8ff4a" }}>What's shaping your TSO visibility:</strong>{" "}
+          Your Bing Business Profile is incomplete (GEO gap). Google Business Profile exists but missing key services (AIO/GEO gap). RateMDs: 3 reviews at 3.8★ (sentiment weight). One Reddit thread mentions competitors 2× and you 0× (AEO/GEO community signal gap).
         </p>
       </div>
     </div>
@@ -434,11 +434,11 @@ function FixList() {
         background: "rgba(232,255,74,0.04)", border: "1px solid rgba(232,255,74,0.12)", borderRadius: 14,
       }}>
         <p className="ar-sans" style={{ color: "#888", fontSize: 14, fontWeight: 300, lineHeight: 1.7, margin: 0 }}>
-          Prefer to have these fixes handled for you?{" "}
-          <a href="/#dfy" style={{ color: "#e8ff4a", borderBottom: "1px solid rgba(232,255,74,0.3)" }}>
-            AnswerRank AI offers a Done-For-You GEO service
+          Ready to stop DIY and let experts handle your entire TSO strategy?{" "}
+          <a href="/#pricing" style={{ color: "#e8ff4a", borderBottom: "1px solid rgba(232,255,74,0.3)" }}>
+            AnswerRank AI Done-For-You TSO service
           </a>
-          {" "}for businesses that want expert implementation.
+          {" "}optimizes your website and business profile across all four platforms — SEO, AEO, AIO, and GEO — so you're cited more often, in more instances, on more platforms.
         </p>
       </div>
     </div>
