@@ -93,28 +93,28 @@ const TSO_PILLARS = [
   {
     tag: "SEO",
     label: "Search Engine Optimization",
-    work: "Technical audit, Core Web Vitals, crawlability, on-page keyword structure, backlink signals, Google Search Console monitoring.",
+    work: "How your website ranks in Google and traditional search engines. Focuses on technical health, keyword relevance, and authority signals.",
     why: "The foundation. Without clean SEO, nothing else compounds.",
     color: "#10b981",
   },
   {
     tag: "AEO",
     label: "Answer Engine Optimization",
-    work: "Question H2 restructures, FAQ schema, Speakable markup, voice search and featured snippet optimization.",
+    work: "How your content appears in featured snippets and voice search results. When someone asks a question, your answer shows first.",
     why: "Gets your content read aloud and shown in zero-click answer boxes.",
     color: "#8b5cf6",
   },
   {
     tag: "AIO",
     label: "AI Overviews Optimization",
-    work: "E-E-A-T signal building, featured snippet eligibility, Google AI Overviews source targeting.",
+    work: "How your business appears in Google's AI-generated summaries. Google AI generates a single answer before showing links.",
     why: "Google generates an AI summary before showing links. You want to be in it.",
     color: "#3b82f6",
   },
   {
     tag: "GEO",
     label: "Generative Engine Optimization",
-    work: "llms.txt creation, LocalBusiness + FAQPage schema, Bing indexing, directory citations, AI Visibility Score tracking.",
+    work: "How your business shows up when people ask ChatGPT, Perplexity, Gemini, and other AI platforms. Where buying decisions now start.",
     why: "ChatGPT, Perplexity, Gemini, and Google AI are where buyers start. This is how you show up.",
     color: "#e8ff4a",
   },
@@ -541,7 +541,7 @@ export default function AnswerRankLanding() {
                 background: "#e8ff4a", color: "#000", fontSize: 16, fontWeight: 500,
                 padding: "16px 32px", borderRadius: 99,
               }}>Get My TSO Audit - $297</a>
-              <a href="/report-preview" className="ar-sans" style={{
+              <a href="#" className="ar-sans" style={{
                 border: "1px solid #2a2a2a", color: "#aaa", fontSize: 16, fontWeight: 300,
                 padding: "16px 32px", borderRadius: 99,
               }}>See a Sample Report</a>
@@ -658,7 +658,7 @@ export default function AnswerRankLanding() {
                 {[
                   "Your business starts appearing across every search surface",
                   "Your competitor stops getting the calls that should be yours",
-                  "Every month your score moves - or we keep working",
+                  "Every month your score moves",
                   "You focus on your business. We handle the search layer.",
                 ].map((outcome) => (
                   <div key={outcome} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
@@ -918,7 +918,7 @@ export default function AnswerRankLanding() {
 
                   {tier.name === "TSO Audit" && (
                     <p className="ar-sans" style={{ textAlign: "center", marginTop: 10 }}>
-                      <a href="/report-preview" style={{ color: "#555", fontSize: 12, borderBottom: "1px solid #333" }}>
+                      <a href="#" style={{ color: "#555", fontSize: 12, borderBottom: "1px solid #333" }}>
                         See a sample report first →
                       </a>
                     </p>
