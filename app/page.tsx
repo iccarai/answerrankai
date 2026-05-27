@@ -174,11 +174,24 @@ const GLOBAL_STYLES = `
     [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: 1fr !important; gap: 12px !important; }
     [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
     [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; }
 
     [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
     [style*="padding: 48px"] { padding: 24px 16px !important; }
+    [style*="padding: 96px 24px"] { padding: 48px 16px !important; }
     [style*="maxWidth: 960"] { max-width: 100% !important; padding: 0 16px !important; }
     [style*="maxWidth: 1200"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 680"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 620"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 560"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 580"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 520"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 760"] { max-width: 100% !important; padding: 0 16px !important; }
+
+    [style*="gap: 80"] { gap: 32px !important; }
+    [style*="gap: 64"] { gap: 24px !important; }
+    [style*="gap: 48"] { gap: 20px !important; }
+    [style*="gap: 40"] { gap: 16px !important; }
   }
 
   @media (max-width: 480px) {
@@ -186,8 +199,15 @@ const GLOBAL_STYLES = `
     [style*="fontSize: 56"] { font-size: 32px !important; }
     [style*="fontSize: 40"] { font-size: 24px !important; }
     [style*="fontSize: 32"] { font-size: 20px !important; }
+    [style*="fontSize: 72"] { font-size: 36px !important; }
+    [style*="fontSize: 74"] { font-size: 38px !important; }
+    [style*="fontSize: 44"] { font-size: 26px !important; }
+    [style*="fontSize: 52"] { font-size: 32px !important; }
     [style*="gap: 40"] { gap: 16px !important; }
     [style*="gap: 80"] { gap: 24px !important; }
+    [style*="padding: 140px"] { padding: 100px 16px 60px !important; }
+    [style*="padding: 120px"] { padding: 80px 16px !important; }
+    [style*="padding: 72px"] { padding: 48px 16px !important; }
   }
   .ar-nav-link:hover { color: #fff !important; }
 
@@ -243,6 +263,10 @@ const GLOBAL_STYLES = `
     nav[style*="position: fixed"] .ar-nav-link {
       font-size: 10px !important;
     }
+
+    footer { padding: 30px 16px !important; }
+    footer[style*="maxWidth: 960"] { max-width: 100% !important; }
+    footer > div { flex-direction: column !important; align-items: flex-start !important; }
   }
   .ar-footer-link:hover { color: #fff !important; }
 
@@ -574,6 +598,104 @@ export default function AnswerRankLanding() {
           </div>
         </section>
 
+        {/* TSO SERVICE SECTION */}
+        <section id="tso" style={{ padding: "96px 24px", background: "#0a0a0a", borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
+          <div style={{ maxWidth: 960, margin: "0 auto" }}>
+
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: 64 }}>
+              <p className="ar-sans" style={{ color: "#e8ff4a", fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>
+                Total Search Optimization
+              </p>
+              <h2 className="ar-serif" style={{ fontSize: "clamp(30px, 4vw, 48px)", color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>
+                Most agencies optimize one channel.<br />
+                <span className="ar-italic" style={{ color: "#e8ff4a" }}>We optimize all four.</span>
+              </h2>
+              <p className="ar-sans" style={{ color: "#888", fontSize: 15, fontWeight: 300, lineHeight: 1.75, maxWidth: 580, margin: "0 auto" }}>
+                The number of places your customers search has changed. The need for a 3-month commitment hasn't - that's how compounding works, whether it's SEO or TSO. What's different is we're covering every surface at once.
+              </p>
+            </div>
+
+            {/* 4 Pillars Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16, marginBottom: 64 }}>
+              {TSO_PILLARS.map((pillar) => (
+                <div key={pillar.tag} className="ar-card" style={{
+                  background: "#0d0d0d", border: "1px solid #1e1e1e",
+                  borderRadius: 16, padding: "28px", transition: "border-color 0.2s",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                    <div style={{
+                      padding: "4px 12px", borderRadius: 99, flexShrink: 0,
+                      background: `${pillar.color}18`, border: `1px solid ${pillar.color}35`,
+                    }}>
+                      <span className="ar-sans" style={{ color: pillar.color, fontSize: 11, fontWeight: 500, letterSpacing: "0.1em" }}>{pillar.tag}</span>
+                    </div>
+                    <span className="ar-sans" style={{ color: "#888", fontSize: 13, fontWeight: 300 }}>{pillar.label}</span>
+                  </div>
+                  <p className="ar-sans" style={{ color: "#ccc", fontSize: 14, fontWeight: 300, lineHeight: 1.7, marginBottom: 16 }}>
+                    {pillar.work}
+                  </p>
+                  <div style={{
+                    padding: "10px 14px", borderRadius: 10,
+                    background: `${pillar.color}08`, borderLeft: `2px solid ${pillar.color}40`,
+                  }}>
+                    <p className="ar-sans" style={{ color: pillar.color === "#e8ff4a" ? "#b8cc3a" : pillar.color, fontSize: 12, fontWeight: 400, margin: 0, lineHeight: 1.5, opacity: 0.9 }}>
+                      {pillar.why}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Outcomes + CTA */}
+            <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40, textAlign: "left" }}>
+                {[
+                  "Your business starts appearing across every search surface",
+                  "Your competitor stops getting the calls that should be yours",
+                  "Every month your score moves - or we keep working",
+                  "You focus on your business. We handle the search layer.",
+                ].map((outcome) => (
+                  <div key={outcome} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                    <div style={{
+                      width: 20, height: 20, borderRadius: "50%",
+                      background: "rgba(232,255,74,0.12)", border: "1px solid rgba(232,255,74,0.3)",
+                      flexShrink: 0, marginTop: 2,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <span style={{ color: "#e8ff4a", fontSize: 11 }}>✓</span>
+                    </div>
+                    <span className="ar-sans" style={{ color: "#ccc", fontSize: 15, fontWeight: 300, lineHeight: 1.6 }}>{outcome}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Scarcity */}
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                background: "rgba(255,107,107,0.06)", border: "1px solid rgba(255,107,107,0.15)",
+                borderRadius: 99, padding: "8px 20px", marginBottom: 32,
+              }}>
+                <div className="ar-pulse" style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff6b6b", flexShrink: 0 }} />
+                <span className="ar-sans" style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 400 }}>
+                  Limited spots available
+                </span>
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <a href="[DISCOVERY_CALL_URL]" className="ar-sans" style={{
+                  display: "inline-block", background: "#e8ff4a", color: "#000",
+                  fontSize: 15, fontWeight: 500, padding: "16px 36px", borderRadius: 99,
+                }}>Book a Free Discovery Call</a>
+              </div>
+              <p className="ar-sans" style={{ color: "#444", fontSize: 12 }}>
+                $1,497/month · 3-month minimum · Month-to-month after · No contracts
+              </p>
+            </div>
+
+          </div>
+        </section>
+
         {/* HOW IT WORKS */}
         <section id="how-it-works" style={{ padding: "96px 24px", borderTop: "1px solid #1a1a1a" }}>
           <div style={{ maxWidth: 960, margin: "0 auto" }}>
@@ -798,149 +920,6 @@ export default function AnswerRankLanding() {
                   )}
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* TSO SERVICE SECTION */}
-        <section id="tso" style={{ padding: "96px 24px", background: "#0a0a0a", borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
-          <div style={{ maxWidth: 960, margin: "0 auto" }}>
-
-            {/* Header */}
-            <div style={{ textAlign: "center", marginBottom: 64 }}>
-              <p className="ar-sans" style={{ color: "#e8ff4a", fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>
-                Total Search Optimization
-              </p>
-              <h2 className="ar-serif" style={{ fontSize: "clamp(30px, 4vw, 48px)", color: "#fff", lineHeight: 1.1, marginBottom: 16 }}>
-                Most agencies optimize one channel.<br />
-                <span className="ar-italic" style={{ color: "#e8ff4a" }}>We optimize all four.</span>
-              </h2>
-              <p className="ar-sans" style={{ color: "#888", fontSize: 15, fontWeight: 300, lineHeight: 1.75, maxWidth: 580, margin: "0 auto" }}>
-                The number of places your customers search has changed. The need for a 3-month commitment hasn't - that's how compounding works, whether it's SEO or TSO. What's different is we're covering every surface at once.
-              </p>
-            </div>
-
-            {/* 4 Pillars Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16, marginBottom: 64 }}>
-              {TSO_PILLARS.map((pillar) => (
-                <div key={pillar.tag} className="ar-card" style={{
-                  background: "#0d0d0d", border: "1px solid #1e1e1e",
-                  borderRadius: 16, padding: "28px", transition: "border-color 0.2s",
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                    <div style={{
-                      padding: "4px 12px", borderRadius: 99, flexShrink: 0,
-                      background: `${pillar.color}18`, border: `1px solid ${pillar.color}35`,
-                    }}>
-                      <span className="ar-sans" style={{ color: pillar.color, fontSize: 11, fontWeight: 500, letterSpacing: "0.1em" }}>{pillar.tag}</span>
-                    </div>
-                    <span className="ar-sans" style={{ color: "#888", fontSize: 13, fontWeight: 300 }}>{pillar.label}</span>
-                  </div>
-                  <p className="ar-sans" style={{ color: "#ccc", fontSize: 14, fontWeight: 300, lineHeight: 1.7, marginBottom: 16 }}>
-                    {pillar.work}
-                  </p>
-                  <div style={{
-                    padding: "10px 14px", borderRadius: 10,
-                    background: `${pillar.color}08`, borderLeft: `2px solid ${pillar.color}40`,
-                  }}>
-                    <p className="ar-sans" style={{ color: pillar.color === "#e8ff4a" ? "#b8cc3a" : pillar.color, fontSize: 12, fontWeight: 400, margin: 0, lineHeight: 1.5, opacity: 0.9 }}>
-                      {pillar.why}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Outcomes + CTA */}
-            <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40, textAlign: "left" }}>
-                {[
-                  "Your business starts appearing across every search surface",
-                  "Your competitor stops getting the calls that should be yours",
-                  "Every month your score moves - or we keep working",
-                  "You focus on your business. We handle the search layer.",
-                ].map((outcome) => (
-                  <div key={outcome} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <div style={{
-                      width: 20, height: 20, borderRadius: "50%",
-                      background: "rgba(232,255,74,0.12)", border: "1px solid rgba(232,255,74,0.3)",
-                      flexShrink: 0, marginTop: 2,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <span style={{ color: "#e8ff4a", fontSize: 11 }}>✓</span>
-                    </div>
-                    <span className="ar-sans" style={{ color: "#ccc", fontSize: 15, fontWeight: 300, lineHeight: 1.6 }}>{outcome}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Scarcity */}
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                background: "rgba(255,107,107,0.06)", border: "1px solid rgba(255,107,107,0.15)",
-                borderRadius: 99, padding: "8px 20px", marginBottom: 32,
-              }}>
-                <div className="ar-pulse" style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff6b6b", flexShrink: 0 }} />
-                <span className="ar-sans" style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 400 }}>
-                  Limited spots available
-                </span>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <a href="[DISCOVERY_CALL_URL]" className="ar-sans" style={{
-                  display: "inline-block", background: "#e8ff4a", color: "#000",
-                  fontSize: 15, fontWeight: 500, padding: "16px 36px", borderRadius: 99,
-                }}>Book a Free Discovery Call</a>
-              </div>
-              <p className="ar-sans" style={{ color: "#444", fontSize: 12 }}>
-                $1,497/month · 3-month minimum · Month-to-month after · No contracts
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-        {/* AGENCY */}
-        <section style={{ padding: "96px 24px" }}>
-          <div style={{ maxWidth: 960, margin: "0 auto" }}>
-            <div style={{
-              background: "#0d0d0d", border: "1px solid #1e1e1e", borderRadius: 24,
-              padding: "56px 64px", display: "grid", gridTemplateColumns: "1fr 1fr",
-              gap: 64, alignItems: "center", position: "relative", overflow: "hidden",
-            }}>
-              <div style={{
-                position: "absolute", top: 0, right: 0, width: 350, height: 350, pointerEvents: "none",
-                background: "radial-gradient(circle, rgba(232,255,74,0.04) 0%, transparent 70%)",
-              }} />
-              <div>
-                <p className="ar-sans" style={{ color: "#e8ff4a", fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>For Agencies</p>
-                <h2 className="ar-serif" style={{ fontSize: "clamp(28px, 3vw, 40px)", color: "#fff", lineHeight: 1.15, marginBottom: 16 }}>
-                  Running a marketing agency? Let's talk.
-                </h2>
-                <p className="ar-sans" style={{ color: "#888", fontSize: 14, fontWeight: 300, lineHeight: 1.75, marginBottom: 16 }}>
-                  TSO is the most defensible upsell available to agencies right now. Your clients' SEO isn't going away - but the search behavior that feeds it is expanding across channels you're not optimizing yet. Every agency that adds TSO earns a new line item with zero competition from the big SEO platforms.
-                </p>
-                <p className="ar-sans" style={{ color: "#666", fontSize: 13, fontWeight: 300, lineHeight: 1.7 }}>
-                  A TSO agency partner program is in development. Book a call and mention it - we're having those conversations now.
-                </p>
-              </div>
-              <div>
-                {[
-                  { label: "Hours of setup per client", value: "< 5 min" },
-                  { label: "Competing SMB TSO services at this price", value: "Zero" },
-                  { label: "Businesses tracking AI visibility today", value: "16%" },
-                ].map((stat, i, arr) => (
-                  <div key={stat.label} style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    paddingBottom: i < arr.length - 1 ? 20 : 0,
-                    marginBottom: i < arr.length - 1 ? 20 : 0,
-                    borderBottom: i < arr.length - 1 ? "1px solid #1a1a1a" : "none",
-                  }}>
-                    <span className="ar-sans" style={{ color: "#666", fontSize: 13, fontWeight: 300 }}>{stat.label}</span>
-                    <span className="ar-serif" style={{ color: "#fff", fontSize: 28 }}>{stat.value}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </section>
