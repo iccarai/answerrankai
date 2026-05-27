@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from "react";
 
 // AnswerRank AI - Landing Page v3.0
