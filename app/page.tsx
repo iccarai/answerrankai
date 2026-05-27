@@ -163,31 +163,31 @@ const GLOBAL_STYLES = `
   .ar-card:hover { border-color: #2e2e2e !important; }
 
   /* Mobile Responsive */
-  @media (max-width: 1024px) {
-    .ar-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
-    .ar-grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  @media (max-width: 768px) {
+    body { font-size: 14px; }
+    [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+    [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 16px !important; }
   }
 
-  @media (max-width: 768px) {
-    .ar-grid-4 { grid-template-columns: 1fr !important; gap: 16px !important; }
-    .ar-grid-3 { grid-template-columns: 1fr !important; gap: 16px !important; }
-    .ar-grid-2 { grid-template-columns: 1fr !important; gap: 16px !important; }
-    .ar-section { padding: 48px 16px !important; }
-    .ar-hero { padding: 40px 20px !important; }
-    .ar-stat-value { font-size: 32px !important; }
-    .ar-heading-xl { font-size: 28px !important; }
-    .ar-heading-lg { font-size: 20px !important; }
-    .ar-padding-lg { padding: 16px 16px !important; }
-    .ar-gap-lg { gap: 16px !important; }
-    .ar-button { padding: 14px 20px !important; font-size: 14px !important; min-width: 100% !important; }
+  @media (max-width: 640px) {
+    [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+    [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
+    [style*="padding: 48px"] { padding: 24px 16px !important; }
+    [style*="maxWidth: 960"] { max-width: 100% !important; padding: 0 16px !important; }
+    [style*="maxWidth: 1200"] { max-width: 100% !important; padding: 0 16px !important; }
   }
 
   @media (max-width: 480px) {
-    .ar-section { padding: 32px 12px !important; }
-    .ar-hero { padding: 32px 16px !important; }
-    .ar-stat-value { font-size: 24px !important; }
-    .ar-heading-xl { font-size: 22px !important; }
-    .ar-heading-lg { font-size: 16px !important; }
+    [style*="fontSize: 48"] { font-size: 28px !important; }
+    [style*="fontSize: 56"] { font-size: 32px !important; }
+    [style*="fontSize: 40"] { font-size: 24px !important; }
+    [style*="fontSize: 32"] { font-size: 20px !important; }
+    [style*="gap: 40"] { gap: 16px !important; }
+    [style*="gap: 80"] { gap: 24px !important; }
   }
   .ar-nav-link:hover { color: #fff !important; }
   .ar-footer-link:hover { color: #fff !important; }
