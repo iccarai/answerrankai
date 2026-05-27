@@ -172,22 +172,23 @@ const GLOBAL_STYLES = `
   @media (max-width: 640px) {
     body { width: 100% !important; overflow-x: hidden !important; }
 
-    [style*="gridTemplateColumns: repeat(4"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: repeat(3"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
-    [style*="gridTemplateColumns: repeat(2,1fr)"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+    div[style*="display: grid"] {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      width: 100% !important;
+      overflow: hidden !important;
+    }
 
     [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
     [style*="padding: 48px"] { padding: 24px 16px !important; }
     [style*="padding: 96px 24px"] { padding: 48px 16px !important; }
-    [style*="maxWidth: 960"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 1200"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 680"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 620"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 560"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 580"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 520"] { max-width: calc(100% - 32px) !important; }
-    [style*="maxWidth: 760"] { max-width: calc(100% - 32px) !important; }
+
+    div[style*="maxWidth"] {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 0 16px !important;
+      box-sizing: border-box !important;
+    }
 
     [style*="gap: 80"] { gap: 32px !important; }
     [style*="gap: 64"] { gap: 24px !important; }
@@ -195,6 +196,7 @@ const GLOBAL_STYLES = `
     [style*="gap: 40"] { gap: 16px !important; }
 
     section { width: 100% !important; overflow-x: hidden !important; }
+    nav { width: 100% !important; overflow-x: hidden !important; }
   }
 
   @media (max-width: 480px) {
@@ -977,7 +979,7 @@ export default function AnswerRankLanding() {
             <div className="ar-serif" style={{ fontSize: 20, color: "#fff" }}>
               AnswerRank <span style={{ color: "#e8ff4a" }}>AI</span>
             </div>
-            <p className="ar-sans" style={{ color: "#444", fontSize: 13, fontWeight: 300 }}>© 2026 AnswerRank AI · Built by ICC</p>
+            <p className="ar-sans" style={{ color: "#444", fontSize: 13, fontWeight: 300 }}>© 2026 AnswerRank AI · Built by <a href="https://independentcc.com" className="ar-footer-link" style={{ color: "#555", transition: "color 0.2s" }}>ICC</a></p>
             <div style={{ display: "flex", gap: 24 }}>
               {["Privacy", "Terms", "Contact"].map((item) => (
                 <a key={item} href="#" className="ar-sans ar-footer-link"
