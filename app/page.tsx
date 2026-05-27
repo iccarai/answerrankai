@@ -190,6 +190,60 @@ const GLOBAL_STYLES = `
     [style*="gap: 80"] { gap: 24px !important; }
   }
   .ar-nav-link:hover { color: #fff !important; }
+
+  nav[style*="position: fixed"] {
+    padding: 16px 48px;
+  }
+  nav[style*="position: fixed"] > div:nth-child(2) {
+    gap: 36px;
+  }
+
+  @media (max-width: 1024px) {
+    nav[style*="position: fixed"] {
+      padding: 12px 24px !important;
+    }
+    nav[style*="position: fixed"] > div:nth-child(2) {
+      gap: 20px !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    nav[style*="position: fixed"] {
+      padding: 12px 16px !important;
+      flex-wrap: wrap;
+    }
+    nav[style*="position: fixed"] > div:nth-child(2) {
+      gap: 12px !important;
+      order: 3;
+      flex-basis: 100%;
+      justify-content: flex-start;
+    }
+    nav[style*="position: fixed"] > div:first-child {
+      flex: 1;
+    }
+    nav[style*="position: fixed"] > a:last-child {
+      order: 2;
+    }
+    nav[style*="position: fixed"] .ar-nav-link {
+      font-size: 11px !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    nav[style*="position: fixed"] {
+      padding: 10px 12px !important;
+    }
+    nav[style*="position: fixed"] > div:first-child {
+      font-size: 16px !important;
+    }
+    nav[style*="position: fixed"] > a:last-child {
+      padding: 8px 16px !important;
+      font-size: 12px !important;
+    }
+    nav[style*="position: fixed"] .ar-nav-link {
+      font-size: 10px !important;
+    }
+  }
   .ar-footer-link:hover { color: #fff !important; }
 
   .ar-guarantee-badge {
