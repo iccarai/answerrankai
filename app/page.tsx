@@ -176,7 +176,7 @@ const GLOBAL_STYLES = `
       grid-template-columns: 1fr !important;
       gap: 12px !important;
       width: 100% !important;
-      overflow: hidden !important;
+      overflow-x: hidden !important;
     }
 
     [style*="padding: 56px 64px"] { padding: 32px 16px !important; }
