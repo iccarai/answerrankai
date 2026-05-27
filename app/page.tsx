@@ -918,7 +918,7 @@ export default function AnswerRankLanding() {
 
                   {tier.name === "TSO Audit" && (
                     <p className="ar-sans" style={{ textAlign: "center", marginTop: 10 }}>
-                      <a href="#" style={{ color: "#555", fontSize: 12, borderBottom: "1px solid #333" }}>
+                      <a href="/report-preview" style={{ color: "#555", fontSize: 12, borderBottom: "1px solid #333" }}>
                         See a sample report first →
                       </a>
                     </p>

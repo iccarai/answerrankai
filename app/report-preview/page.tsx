@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react";
 
 // AnswerRank AI — Sample Report Preview Page
