@@ -11,8 +11,8 @@ import { createClient } from '@supabase/supabase-js'
  * Always set user_id explicitly on every insert — RLS won't enforce it here.
  */
 export const adminClient = createClient(
-  process.env.next_public_supabase_url!,
-  process.env.supabase_service_role_key!,
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
   {
     auth: {
       autoRefreshToken: false,
