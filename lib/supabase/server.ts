@@ -10,8 +10,8 @@ export function createServerClient() {
   const cookieStore = cookies()
 
   return _createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.next_public_supabase_url!,
+    process.env.next_public_supabase_anon_key!,
     {
       cookies: {
         get(name: string) {

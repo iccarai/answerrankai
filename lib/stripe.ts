@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+export const stripe = new Stripe(process.env.stripe_secret_key!)
 
 export async function createCheckoutSession(params: {
   scanId: string
@@ -11,12 +11,12 @@ export async function createCheckoutSession(params: {
 }) {
   const priceId =
     params.tier === 'one_time'
-      ? process.env.STRIPE_PRICE_AUDIT_297
-      : process.env.STRIPE_PRICE_DFY_1497
+      ? process.env.stripe_price_audit_297
+      : process.env.stripe_price_dfy_1497
 
   if (!priceId) {
     throw new Error(
-      `STRIPE_PRICE_${params.tier === 'one_time' ? 'AUDIT_297' : 'DFY_1497'} not configured`
+      `stripe_price_${params.tier === 'one_time' ? 'audit_297' : 'dfy_1497'} not configured`
     )
   }
 
