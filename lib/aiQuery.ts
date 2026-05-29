@@ -100,6 +100,11 @@ function makeResult(
     citationUrls: citationUrls ?? extractUrls(response),
     rawResponse,
     runIndex,
+    // AIO fields are Google-pillar specific; non-Google providers default them.
+    aioFired: false,
+    aioEligible: false,
+    organicPosition: null,
+    aioSuppressed: false,
   }
 }
 
@@ -181,57 +186,168 @@ class GeminiProvider implements AIProvider {
   }
 }
 
-// ─── Google PSE Provider ──────────────────────────────────────────────────────
-// Labeled as "Google Search Visibility" in the report — uses the Programmable Search
-// Engine API as a stable proxy for Google AI Overview signals (no scraping).
+// ─── SerpAPI Google Provider (Google AI Overviews) ───────────────────────────
+// Replaces the deprecated Programmable Search Engine (PSE retired for new engines
+// Jan 20, 2026). Two-call flow per SerpAPI spec:
+//   Call 1 — engine=google: returns ai_overview inline (State A), a page_token for
+//            a deferred fetch (State B), or nothing/error (State C).
+//   Call 2 — engine=google_ai_overview: only when a page_token is present. The
+//            token expires within ~1 minute, so it is fired immediately.
+// The platform identifier is 'serpapi_google' (Google PSE fully removed). The
+// user-facing label is "Google AI Overviews".
 
-interface PSEItem {
-  title: string
-  snippet: string
-  link: string
+interface SerpApiReference {
+  title?: string
+  link?: string
+  snippet?: string
+  source?: string
+  index?: number
 }
 
-interface PSEResponse {
-  items?: PSEItem[]
+interface SerpApiTextBlock {
+  type?: string
+  snippet?: string
+  title?: string
+  subtitle?: string
+  formatted?: string
+  list?: SerpApiTextBlock[]
+  text_blocks?: SerpApiTextBlock[]
 }
 
-class GooglePSEProvider implements AIProvider {
-  readonly name: PlatformName = 'google_pse'
+interface SerpApiAIOverview {
+  text_blocks?: SerpApiTextBlock[]
+  references?: SerpApiReference[]
+  page_token?: string
+  serpapi_link?: string
+  error?: string
+}
+
+interface SerpApiOrganicResult {
+  position?: number
+  title?: string
+  link?: string
+  snippet?: string
+  domain?: string
+}
+
+interface SerpApiSearchResponse {
+  ai_overview?: SerpApiAIOverview
+  organic_results?: SerpApiOrganicResult[]
+}
+
+/** Recursively walks text_blocks (incl. nested list[] and expandable text_blocks[]) collecting readable text. */
+function collectSnippets(blocks: SerpApiTextBlock[]): string {
+  const parts: string[] = []
+  for (const block of blocks) {
+    if (block.snippet) parts.push(block.snippet)
+    if (block.title) parts.push(block.title)
+    if (block.subtitle) parts.push(block.subtitle)
+    if (block.formatted) parts.push(block.formatted)
+    if (Array.isArray(block.list)) parts.push(collectSnippets(block.list))
+    if (Array.isArray(block.text_blocks)) parts.push(collectSnippets(block.text_blocks))
+  }
+  return parts.filter(Boolean).join(' ')
+}
+
+/** Flattens reference title/source/link/snippet into one searchable string. */
+function referenceText(references: SerpApiReference[]): string {
+  return references
+    .map(r => [r.title, r.source, r.link, r.snippet].filter(Boolean).join(' '))
+    .join(' ')
+}
+
+/** Finds the 1-based position of the brand's own domain within organic_results, or null. */
+function findOrganicPosition(
+  domain: string | undefined,
+  organic: SerpApiOrganicResult[]
+): number | null {
+  if (!domain) return null
+  const needle = domain.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '')
+  if (!needle) return null
+  for (const r of organic) {
+    const hay = (r.domain ?? r.link ?? '').toLowerCase()
+    if (hay.includes(needle)) return r.position ?? null
+  }
+  return null
+}
+
+class SerpApiGoogleProvider implements AIProvider {
+  readonly name: PlatformName = 'serpapi_google'
 
   async query(prompt: string, business: BusinessContext): Promise<QueryResult> {
-    const params = new URLSearchParams({
-      key: process.env.GOOGLE_PSE_API_KEY!,
-      cx: process.env.GOOGLE_PSE_ENGINE_ID!,
+    const apiKey = process.env.SERPAPI_KEY!
+
+    // Call 1 — Google Search. AIO only works for hl=en with limited gl codes.
+    const call1Params = new URLSearchParams({
+      engine: 'google',
       q: prompt,
-      num: '10',
+      api_key: apiKey,
+      hl: 'en',
+      gl: 'us',
     })
+    const res1 = await fetch(`https://serpapi.com/search.json?${call1Params}`)
+    if (!res1.ok) throw new Error(`SerpAPI search error: ${res1.status} ${res1.statusText}`)
+    const data1 = (await res1.json()) as SerpApiSearchResponse
 
-    const res = await fetch(`https://www.googleapis.com/customsearch/v1?${params}`)
-    if (!res.ok) throw new Error(`Google PSE API error: ${res.status} ${res.statusText}`)
+    let aioData: SerpApiAIOverview | null = data1.ai_overview ?? null
 
-    const data = (await res.json()) as PSEResponse
-    const items = data.items ?? []
+    // State B — deferred. page_token expires within ~1 minute; fire immediately.
+    if (aioData?.page_token) {
+      try {
+        const call2Params = new URLSearchParams({
+          engine: 'google_ai_overview',
+          page_token: aioData.page_token,
+          api_key: apiKey,
+        })
+        const res2 = await fetch(`https://serpapi.com/search.json?${call2Params}`)
+        aioData = res2.ok
+          ? ((await res2.json()) as SerpApiSearchResponse).ai_overview ?? null
+          : null
+      } catch {
+        aioData = null
+      }
+    }
 
-    // AIO source zone = positions 1–5; brand mention = appearing there
-    const businessInAIOZone = items.slice(0, 5).some(
-      item =>
-        item.title.toLowerCase().includes(business.name.toLowerCase()) ||
-        item.snippet.toLowerCase().includes(business.name.toLowerCase())
-    )
+    // Determine AIO state.
+    const textBlocks = aioData?.text_blocks ?? []
+    const references = aioData?.references ?? []
+    const organicResults = data1.organic_results ?? []
 
-    const combinedText = items.map(i => `${i.title} ${i.snippet}`).join(' ')
-    const citationUrls = items.map(i => i.link)
+    let aioFired = false
+    let aioSuppressed = false
+    if (textBlocks.length > 0) {
+      aioFired = true // State A
+    } else if (!aioData || aioData.error) {
+      aioSuppressed = true // State C — query type not eligible
+    }
+
+    // Field extraction (per spec mapping table).
+    const snippetText = collectSnippets(textBlocks)
+    const combinedText = `${snippetText} ${referenceText(references)}`.trim()
+
+    const brandMentioned = detectMention(combinedText, business.name)
+    const brandSentiment = detectSentiment(snippetText, business.name)
+    const competitorsMentioned = detectCompetitors(combinedText, business.competitors)
+    const citationUrls = references
+      .map(r => r.link)
+      .filter((link): link is string => Boolean(link))
+    const organicPosition = findOrganicPosition(business.domain, organicResults)
+    const response = snippetText.trim() || organicResults[0]?.snippet || ''
 
     return {
-      platform: 'google_pse',
+      platform: 'serpapi_google',
       prompt,
-      response: combinedText,
-      brandMentioned: businessInAIOZone,
-      brandSentiment: detectSentiment(combinedText, business.name),
-      competitorsMentioned: detectCompetitors(combinedText, business.competitors),
+      response,
+      brandMentioned,
+      brandSentiment,
+      competitorsMentioned,
       citationUrls,
-      rawResponse: JSON.stringify(data),
+      rawResponse: JSON.stringify(aioData ?? organicResults.slice(0, 3)),
       runIndex: 0,
+      aioFired,
+      aioEligible: aioFired || organicResults.length > 0,
+      organicPosition,
+      aioSuppressed,
     }
   }
 }
@@ -283,7 +399,7 @@ export async function runScan(
     new ClaudeProvider(),
     new PerplexityProvider(),
     new GeminiProvider(),
-    new GooglePSEProvider(),
+    new SerpApiGoogleProvider(),
   ]
 
   const settled = await Promise.allSettled(

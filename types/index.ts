@@ -1,6 +1,6 @@
 // ─── Platform & Status Enums ────────────────────────────────────────────────
 
-export type PlatformName = 'claude' | 'perplexity' | 'gemini' | 'google_pse'
+export type PlatformName = 'claude' | 'perplexity' | 'gemini' | 'serpapi_google'
 export type SentimentValue = 'positive' | 'neutral' | 'negative' | 'not_mentioned'
 export type ScanStatus = 'pending' | 'running' | 'complete' | 'failed'
 export type SubscriptionTier = 'one_time' | 'monthly' | 'annual'
@@ -14,6 +14,8 @@ export interface BusinessContext {
   location: string
   industry: string
   competitors: Array<{ name: string; location: string }>
+  /** Business's own domain (e.g. "example.com"); used to locate organic position in SerpAPI results. */
+  domain?: string
 }
 
 // ─── AI Query Engine ─────────────────────────────────────────────────────────
@@ -33,6 +35,14 @@ export interface QueryResult {
   citationUrls: string[]
   rawResponse: string
   runIndex: number
+  /** SerpAPI/Google pillar: true when ai_overview returned text_blocks. Always false for non-Google platforms. */
+  aioFired: boolean
+  /** True when the AIO fired OR organic results were returned (query was valid/eligible). */
+  aioEligible: boolean
+  /** Position (1–10) of the brand's own domain in organic_results, or null if not found / not applicable. */
+  organicPosition: number | null
+  /** True when ai_overview is absent/errored — query type not eligible (not a content problem). */
+  aioSuppressed: boolean
 }
 
 // ─── Score Engine ────────────────────────────────────────────────────────────

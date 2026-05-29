@@ -42,7 +42,7 @@ All files are manually owned. No external UI generation tool is used.
 | AI — Claude | claude-sonnet-4-6 (Anthropic) | Primary query engine |
 | AI — Perplexity | sonar-medium-online | Real-time web retrieval |
 | AI — Gemini | gemini-1.5-flash | Google ecosystem signals |
-| AI — Google Search | Google Programmable Search Engine API | Proxy for AIO signals — no scraping |
+| SerpAPI | Google Search + AI Overview API | Replaces PSE (deprecated Jan 2026) — two-call AIO flow |
 | Payments | Stripe | One-time audit + DFY manual link |
 | Email | Resend | Monthly reports + transactional |
 | PDF | react-pdf | Branded report output |
@@ -83,12 +83,14 @@ All files are manually owned. No external UI generation tool is used.
 - Estimated cost per scan: **$0.20–$0.45**
 
 ### Google AI Overviews Approach
-Uses Google Programmable Search Engine API (no scraping):
-1. Query Google for business + industry + location
-2. Analyze top-ranked results (which AIO pulls from)
-3. Check if business content appears in positions 1–5
-4. Detect featured snippet eligibility as AIO proxy signal
-Labeled in reports as "Google Search Visibility" — honest and stable.
+Uses SerpAPI's two-call flow (PSE removed — deprecated Jan 2026). Platform identifier: `serpapi_google`.
+1. **Call 1** — `engine=google` (`hl=en`, `gl=us`): returns the `ai_overview` object plus `organic_results`.
+2. The `ai_overview` arrives in one of three states:
+   - **State A (inline)** — `text_blocks` present → AIO fired; parse references + snippets.
+   - **State B (deferred)** — only a `page_token` (expires ~1 min) → fire **Call 2** (`engine=google_ai_overview`) immediately.
+   - **State C (absent/error)** — `ai_overview` missing or `error` → query type not eligible (`aioSuppressed`).
+3. Each `QueryResult` carries `aioFired`, `aioEligible`, `organicPosition`, and `aioSuppressed` so scoring can distinguish "fired but not cited" (fixable) from "query type not eligible" (not fixable).
+4. Report label: **"Google AI Overviews"** when AIO fires, **"Google Search Visibility"** when it does not — never an empty pillar.
 
 ---
 
@@ -268,9 +270,8 @@ ANTHROPIC_API_KEY=
 PERPLEXITY_API_KEY=
 GOOGLE_AI_API_KEY=
 
-# Google Programmable Search Engine
-GOOGLE_PSE_API_KEY=
-GOOGLE_PSE_ENGINE_ID=
+# SerpAPI — Google AI Overviews (replaces Google PSE)
+SERPAPI_KEY=
 
 # Stripe
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
@@ -312,7 +313,7 @@ NEXT_PUBLIC_DISCOVERY_CALL_URL=[DISCOVERY_CALL_URL]
 |---|---|
 | Supabase project | Not created — need URL + anon key + service role key |
 | Resend | Not created — need to verify answerrank.ai domain |
-| Google PSE | Not enabled — need API key + engine ID |
+| SerpAPI | Not enabled — need API key (free tier = 250 searches/mo) |
 | Stripe products | Need new price IDs ($297 audit, $1,497 DFY) |
 | Discovery call booking | Domain not purchased — cal.com TBD |
 | Anthropic API | ✅ Active |
@@ -327,7 +328,7 @@ NEXT_PUBLIC_DISCOVERY_CALL_URL=[DISCOVERY_CALL_URL]
 1. Copy `AnswerRankAI-Landing-v3.tsx` into `app/page.tsx`
 2. Create Supabase project → add keys to `.env.local`
 3. Create Resend account → verify `answerrank.ai` domain
-4. Enable Google Cloud PSE API → create engine → get key + engine ID
+4. Create SerpAPI account → get `SERPAPI_KEY` (free tier = 250 searches/mo)
 5. Update Stripe price IDs to `$297` audit and `$1,497` DFY
 6. Build Phase 3 API routes in Claude Code
 7. Build Phase 4 store + dashboard

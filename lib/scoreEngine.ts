@@ -72,7 +72,7 @@ function calcCompetitorDisplacement(results: QueryResult[]): number {
 // ─── Per-Platform Scores ──────────────────────────────────────────────────────
 
 function calcPlatformScores(results: QueryResult[]): Record<PlatformName, number> {
-  const platforms: PlatformName[] = ['claude', 'perplexity', 'gemini', 'google_pse']
+  const platforms: PlatformName[] = ['claude', 'perplexity', 'gemini', 'serpapi_google']
 
   return Object.fromEntries(
     platforms.map(platform => {
