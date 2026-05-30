@@ -15,13 +15,8 @@ import { useState, useEffect, useRef } from "react";
 const PLATFORMS = ["Claude", "ChatGPT", "Perplexity", "Gemini", "Google AI", "Google Search"];
 
 // Rotating brand logos for the hero (PNGs live in /public/logos, 600×180 transparent).
-const HERO_LOGOS = [
-  { src: "/logos/chatgpt.png", alt: "ChatGPT" },
-  { src: "/logos/claude.png", alt: "Claude" },
-  { src: "/logos/perplexity.png", alt: "Perplexity" },
-  { src: "/logos/gemini.png", alt: "Gemini" },
-  { src: "/logos/google.png", alt: "Google" },
-];
+// Rotating platform names for the hero (text).
+const HERO_NAMES = ["ChatGPT", "Claude", "Perplexity", "Gemini", "Google"];
 
 const PRICING = [
   {
@@ -174,11 +169,7 @@ const GLOBAL_STYLES = `
 
   .ar-ticker-wrap { overflow: hidden; height: 1.2em; display: inline-block; vertical-align: bottom; }
   .ar-ticker-inner { animation: ar-ticker 8s ease-in-out infinite; line-height: 1.2em; }
-
-  .ar-logo-wrap { overflow: hidden; height: 1.2em; display: inline-block; vertical-align: middle; }
-  .ar-logo-inner { animation: ar-ticker-5 10s ease-in-out infinite; }
-  .ar-logo-row { height: 1.2em; display: flex; align-items: center; }
-  .ar-logo-row img { height: 1.05em; width: auto; display: block; object-fit: contain; }
+  .ar-ticker-inner-5 { animation: ar-ticker-5 10s ease-in-out infinite; line-height: 1.2em; }
 
   .ar-card:hover { border-color: #2e2e2e !important; }
 
@@ -530,14 +521,11 @@ export default function AnswerRankLanding() {
               color: "#fff", letterSpacing: "-0.02em", marginBottom: 20,
             }}>
               Someone just asked{" "}
-              <span className="ar-logo-wrap">
-                <span className="ar-logo-inner">
-                  {HERO_LOGOS.map(logo => (
-                    <span key={logo.alt} className="ar-logo-row">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={logo.src} alt={logo.alt} />
-                    </span>
-                  ))}
+              <span style={{ display: "inline" }}>
+                <span className="ar-ticker-wrap">
+                  <span className="ar-ticker-inner-5 ar-serif" style={{ color: "#fff", display: "block" }}>
+                    {HERO_NAMES.map(n => <span key={n} style={{ display: "block" }}>{n}</span>)}
+                  </span>
                 </span>
               </span><br />
               for{" "}
