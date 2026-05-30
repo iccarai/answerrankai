@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import OpenAI from 'openai'
 import type { AIProvider, BusinessContext, PlatformName, QueryResult } from '@/types'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -164,6 +165,29 @@ class PerplexityProvider implements AIProvider {
     const citationUrls = data.citations ?? extractUrls(response)
 
     return makeResult('perplexity', prompt, response, JSON.stringify(data), business, 0, citationUrls)
+  }
+}
+
+// ─── OpenAI (ChatGPT) Provider ────────────────────────────────────────────────
+
+class OpenAIProvider implements AIProvider {
+  readonly name: PlatformName = 'openai'
+  private client: OpenAI
+
+  constructor() {
+    this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
+  }
+
+  async query(prompt: string, business: BusinessContext): Promise<QueryResult> {
+    const completion = await this.client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      max_tokens: 512,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const response = completion.choices[0]?.message?.content ?? ''
+
+    return makeResult('openai', prompt, response, JSON.stringify(completion), business, 0)
   }
 }
 
@@ -384,11 +408,12 @@ async function runPlatform(
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Runs all 4 providers in parallel. Within each provider, prompts run
+ * Runs all 5 providers in parallel. Within each provider, prompts run
  * sequentially with RUNS_PER_PROMPT repetitions each.
  *
- * Failed providers are logged and excluded (Promise.allSettled — never throws).
- * Expected total: 15 prompts × 3 runs × 4 platforms = 180 API calls.
+ * Failed providers are logged and excluded (Promise.allSettled — never throws),
+ * so a missing key (e.g. Perplexity) simply drops that platform.
+ * Expected total: 15 prompts × 3 runs × 5 platforms = 225 API calls.
  * Estimated wall-clock time: 60–120 seconds.
  */
 export async function runScan(
@@ -397,6 +422,7 @@ export async function runScan(
 ): Promise<QueryResult[]> {
   const providers: AIProvider[] = [
     new ClaudeProvider(),
+    new OpenAIProvider(),
     new PerplexityProvider(),
     new GeminiProvider(),
     new SerpApiGoogleProvider(),

@@ -1,4 +1,5 @@
 import type { PlatformName, QueryResult, ScoreBreakdown, ScoreComponents } from '@/types'
+import { ALL_PLATFORMS } from '@/types'
 
 // ─── Weights (must sum to 1.0) ────────────────────────────────────────────────
 
@@ -50,12 +51,12 @@ function calcSentimentScore(results: QueryResult[]): number {
   return (total / mentioned.length) * 100
 }
 
-/** (platforms_with_at_least_one_mention / 4) × 100 */
+/** (platforms_with_at_least_one_mention / total_platforms) × 100 */
 function calcPlatformCoverage(results: QueryResult[]): number {
   const mentioningPlatforms = new Set(
     results.filter(r => r.brandMentioned).map(r => r.platform)
   )
-  return (mentioningPlatforms.size / 4) * 100
+  return (mentioningPlatforms.size / ALL_PLATFORMS.length) * 100
 }
 
 /**
@@ -72,10 +73,8 @@ function calcCompetitorDisplacement(results: QueryResult[]): number {
 // ─── Per-Platform Scores ──────────────────────────────────────────────────────
 
 function calcPlatformScores(results: QueryResult[]): Record<PlatformName, number> {
-  const platforms: PlatformName[] = ['claude', 'perplexity', 'gemini', 'serpapi_google']
-
   return Object.fromEntries(
-    platforms.map(platform => {
+    ALL_PLATFORMS.map(platform => {
       const pr = results.filter(r => r.platform === platform)
       if (pr.length === 0) return [platform, 0]
 

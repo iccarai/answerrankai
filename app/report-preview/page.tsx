@@ -36,13 +36,15 @@ const GLOBAL_STYLES = `
 
 const TABS = ["Score Overview", "Competitor Matrix", "Sentiment", "Fix List"];
 
-const PLATFORMS = ["ChatGPT", "Perplexity", "Gemini", "Google AI"];
+const PLATFORMS = ["Claude", "ChatGPT", "Perplexity", "Gemini", "Google AI", "Google Search"];
 
 const PLATFORM_SCORES = [
+  { platform: "Claude", score: 15, color: "#d97757" },
   { platform: "ChatGPT", score: 12, color: "#10a37f" },
   { platform: "Perplexity", score: 8, color: "#6e56cf" },
   { platform: "Gemini", score: 24, color: "#4285f4" },
   { platform: "Google AI", score: 31, color: "#fbbc04" },
+  { platform: "Google Search", score: 22, color: "#34a853" },
 ];
 
 const COMPETITORS = [
@@ -53,6 +55,11 @@ const COMPETITORS = [
 ];
 
 const SENTIMENT_DATA = [
+  {
+    platform: "Claude",
+    positive: 22, neutral: 53, negative: 25,
+    note: "Reasons over indexed web content and cited sources. Mentions you occasionally but leans on competitors with richer structured profiles.",
+  },
   {
     platform: "ChatGPT",
     positive: 20, neutral: 55, negative: 25,
@@ -72,6 +79,11 @@ const SENTIMENT_DATA = [
     platform: "Google AI",
     positive: 25, neutral: 50, negative: 25,
     note: "Your content is indexed but competing against 3 higher-authority sources. You need answer-first content to rank.",
+  },
+  {
+    platform: "Google Search",
+    positive: 28, neutral: 52, negative: 20,
+    note: "You rank for branded terms but fall outside the top organic results for the service-and-city queries that actually convert.",
   },
 ];
 
@@ -286,10 +298,10 @@ function CompetitorMatrix() {
           </thead>
           <tbody>
             {[
-              { name: "Peak Performance", isYou: true, scores: [12, 8, 24, 31] },
-              { name: "Alignment Chiro", isYou: false, scores: [82, 74, 65, 63] },
-              { name: "Spine Centre", isYou: false, scores: [61, 48, 52, 56] },
-              { name: "NorthWest Chiro", isYou: false, scores: [22, 18, 35, 40] },
+              { name: "Peak Performance", isYou: true, scores: [15, 12, 8, 24, 31, 22] },
+              { name: "Alignment Chiro", isYou: false, scores: [78, 82, 74, 65, 63, 70] },
+              { name: "Spine Centre", isYou: false, scores: [57, 61, 48, 52, 56, 59] },
+              { name: "NorthWest Chiro", isYou: false, scores: [25, 22, 18, 35, 40, 31] },
             ].map((row, ri) => (
               <tr key={row.name} style={{ borderBottom: ri < 3 ? "1px solid #111" : "none" }}>
                 <td className="ar-sans" style={{
@@ -321,7 +333,7 @@ function CompetitorMatrix() {
         border: "1px solid rgba(255,107,107,0.15)", borderRadius: 12,
       }}>
         <p className="ar-sans" style={{ color: "#ff6b6b", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-          <strong>Your TSO gap:</strong> Alignment Chiropractic appears in AI answers 4.7× more often across all four platforms. They're optimized for TSO — complete Bing + Google profiles, structured data, answer-first content, and directory listings. You're strong in one channel but underdeveloped across the others.
+          <strong>Your TSO gap:</strong> Alignment Chiropractic appears in AI answers 4.7× more often across all six platforms. They're optimized for TSO — complete Bing + Google profiles, structured data, answer-first content, and directory listings. You're strong in one channel but underdeveloped across the others.
         </p>
       </div>
     </div>

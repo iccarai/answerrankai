@@ -9,6 +9,7 @@ import type {
   ScoreBreakdown,
   SentimentData,
 } from '@/types'
+import { ALL_PLATFORMS } from '@/types'
 
 // ─── Internal Builders ────────────────────────────────────────────────────────
 
@@ -16,11 +17,9 @@ function buildCompetitorData(
   results: QueryResult[],
   business: BusinessContext
 ): CompetitorData[] {
-  const platforms: PlatformName[] = ['claude', 'perplexity', 'gemini', 'serpapi_google']
-
   return business.competitors.map(competitor => {
     const platformScores = Object.fromEntries(
-      platforms.map(platform => {
+      ALL_PLATFORMS.map(platform => {
         const pr = results.filter(r => r.platform === platform)
         if (pr.length === 0) return [platform, 0]
         const mentioned = pr.filter(r =>
@@ -47,9 +46,7 @@ function buildCompetitorData(
 }
 
 function buildSentimentData(results: QueryResult[]): SentimentData[] {
-  const platforms: PlatformName[] = ['claude', 'perplexity', 'gemini', 'serpapi_google']
-
-  return platforms.map(platform => {
+  return ALL_PLATFORMS.map(platform => {
     const mentioned = results.filter(
       r => r.platform === platform && r.brandMentioned
     )

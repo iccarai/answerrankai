@@ -12,14 +12,23 @@ import { useState, useEffect, useRef } from "react";
 //   - Hero + Final CTA: updated price and TSO language
 //   - All other sections unchanged from v2.1
 
-const PLATFORMS = ["ChatGPT", "Perplexity", "Gemini", "Google AI"];
+const PLATFORMS = ["Claude", "ChatGPT", "Perplexity", "Gemini", "Google AI", "Google Search"];
+
+// Rotating brand logos for the hero (PNGs live in /public/logos, 600×180 transparent).
+const HERO_LOGOS = [
+  { src: "/logos/chatgpt.png", alt: "ChatGPT" },
+  { src: "/logos/claude.png", alt: "Claude" },
+  { src: "/logos/perplexity.png", alt: "Perplexity" },
+  { src: "/logos/gemini.png", alt: "Gemini" },
+  { src: "/logos/google.png", alt: "Google" },
+];
 
 const PRICING = [
   {
     name: "TSO Audit",
     price: "$297",
     period: "one time",
-    description: "See your AI Visibility Score across all four platforms. Know where you stand and what's costing you visibility.",
+    description: "See your AI Visibility Score across all six platforms. Know where you stand and what's costing you visibility.",
     features: [
       "Your AI Visibility Score (0-100)",
       "Platform-by-platform breakdown",
@@ -61,7 +70,7 @@ const FAQS = [
   },
   {
     q: "What is AI Visibility and why does it matter?",
-    a: "When someone asks ChatGPT, Perplexity, or Google AI who to hire in your industry, the AI generates a single answer. Your business is either in that answer or it isn't - there is no page 2. AI Visibility is how consistently and positively your business appears in those answers. It's the fastest-growing discovery channel for businesses of every size.",
+    a: "When someone asks Claude, ChatGPT, Perplexity, Gemini, or Google AI who to hire in your industry, the AI generates a single answer. Your business is either in that answer or it isn't - there is no page 2. AI Visibility is how consistently and positively your business appears in those answers. It's the fastest-growing discovery channel for businesses of every size.",
   },
   {
     q: "How is this different from SEO?",
@@ -69,7 +78,7 @@ const FAQS = [
   },
   {
     q: "Which AI platforms do you scan?",
-    a: "We scan all four major platforms: ChatGPT, Perplexity, Gemini, and Google AI Overviews. Each platform weighs different signals, so a business can be invisible on one and well-represented on another. You see the full picture broken down by platform.",
+    a: "We scan all six major surfaces: Claude, ChatGPT, Perplexity, Gemini, Google AI Overviews, and Google Search. Each platform weighs different signals, so a business can be invisible on one and well-represented on another. You see the full picture broken down by platform.",
   },
   {
     q: "How is the score calculated?",
@@ -148,6 +157,14 @@ const GLOBAL_STYLES = `
     75% { transform: translateY(-4.2em); }
     100% { transform: translateY(0); }
   }
+  @keyframes ar-ticker-5 {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(-1.2em); }
+    40% { transform: translateY(-2.4em); }
+    60% { transform: translateY(-3.6em); }
+    80% { transform: translateY(-4.8em); }
+    100% { transform: translateY(0); }
+  }
 
   .ar-pulse { animation: ar-pulse 2s ease-in-out infinite; }
   .ar-fade-1 { animation: ar-fadeup 0.7s ease forwards; }
@@ -157,6 +174,11 @@ const GLOBAL_STYLES = `
 
   .ar-ticker-wrap { overflow: hidden; height: 1.2em; display: inline-block; vertical-align: bottom; }
   .ar-ticker-inner { animation: ar-ticker 8s ease-in-out infinite; line-height: 1.2em; }
+
+  .ar-logo-wrap { overflow: hidden; height: 1.2em; display: inline-block; vertical-align: middle; }
+  .ar-logo-inner { animation: ar-ticker-5 10s ease-in-out infinite; }
+  .ar-logo-row { height: 1.2em; display: flex; align-items: center; }
+  .ar-logo-row img { height: 1.05em; width: auto; display: block; object-fit: contain; }
 
   .ar-card:hover { border-color: #2e2e2e !important; }
 
@@ -321,7 +343,7 @@ function ScanDemo() {
   const colors = ["#e8ff4a", "#ff6b6b", "#444", "#2a2a2a"];
 
   useEffect(() => {
-    const t = setInterval(() => setActive(p => (p + 1) % 4), 1800);
+    const t = setInterval(() => setActive(p => (p + 1) % PLATFORMS.length), 1800);
     return () => clearInterval(t);
   }, []);
 
@@ -507,7 +529,17 @@ export default function AnswerRankLanding() {
               fontSize: "clamp(38px, 6.5vw, 74px)", lineHeight: 1.06,
               color: "#fff", letterSpacing: "-0.02em", marginBottom: 20,
             }}>
-              Someone just asked ChatGPT<br />
+              Someone just asked{" "}
+              <span className="ar-logo-wrap">
+                <span className="ar-logo-inner">
+                  {HERO_LOGOS.map(logo => (
+                    <span key={logo.alt} className="ar-logo-row">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={logo.src} alt={logo.alt} />
+                    </span>
+                  ))}
+                </span>
+              </span><br />
               for{" "}
               <span style={{ display: "inline" }}>
                 <span className="ar-ticker-wrap">
@@ -532,7 +564,7 @@ export default function AnswerRankLanding() {
               color: "#e8ff4a", fontSize: 14, fontWeight: 400,
               maxWidth: 480, margin: "0 auto 40px", lineHeight: 1.6,
             }}>
-              Find out your AI Visibility Score across ChatGPT, Perplexity, Gemini, and Google AI - and exactly what's costing you.
+              Find out your AI Visibility Score across Claude, ChatGPT, Perplexity, Gemini, Google AI, and Google Search - and exactly what's costing you.
             </p>
 
             {/* CTAs */}
@@ -707,7 +739,7 @@ export default function AnswerRankLanding() {
             <div style={{ marginBottom: 56 }}>
               <p className="ar-sans" style={{ color: "#e8ff4a", fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>How It Works</p>
               <h2 className="ar-serif" style={{ fontSize: "clamp(30px, 4vw, 48px)", color: "#fff", lineHeight: 1.1, maxWidth: 480 }}>
-                Four platforms. One score. A clear path forward.
+                Six platforms. One score. A clear path forward.
               </h2>
             </div>
 
@@ -777,7 +809,7 @@ export default function AnswerRankLanding() {
                   { label: "Brand mention rate", weight: "35%", desc: "How often you're named in relevant queries" },
                   { label: "Citation source rate", weight: "20%", desc: "How often your content is used as AI's source" },
                   { label: "Sentiment score", weight: "20%", desc: "Positive vs. neutral vs. negative framing" },
-                  { label: "Platform coverage", weight: "15%", desc: "How many of the 4 platforms mention you" },
+                  { label: "Platform coverage", weight: "15%", desc: "How many platforms mention you" },
                   { label: "Competitor displacement", weight: "10%", desc: "How often competitors appear instead of you" },
                 ].map((item) => (
                   <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
@@ -958,7 +990,7 @@ export default function AnswerRankLanding() {
               <span className="ar-italic" style={{ color: "#e8ff4a" }}>Before your competitors do.</span>
             </h2>
             <p className="ar-sans" style={{ color: "#888", fontSize: 17, fontWeight: 300, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 16px" }}>
-              One audit. Four AI platforms. A score, a competitor breakdown, and a clear list of what to fix.
+              One audit. Six platforms. A score, a competitor breakdown, and a clear list of what to fix.
             </p>
             <p className="ar-sans" style={{ color: "#666", fontSize: 14, fontWeight: 300, maxWidth: 420, margin: "0 auto 40px", lineHeight: 1.6 }}>
               If we don't surface at least 5 actionable fixes, you pay nothing. That's the guarantee.

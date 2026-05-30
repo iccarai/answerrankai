@@ -1,6 +1,20 @@
 // ─── Platform & Status Enums ────────────────────────────────────────────────
 
-export type PlatformName = 'claude' | 'perplexity' | 'gemini' | 'serpapi_google'
+export type PlatformName = 'claude' | 'openai' | 'perplexity' | 'gemini' | 'serpapi_google'
+
+/**
+ * Single source of truth for the scored API providers. Note this is FIVE
+ * providers, while the marketing site lists six names — `serpapi_google`
+ * supplies both the "Google AI" (AI Overviews) and "Google Search" (organic)
+ * display facets. Use `.length` for any per-platform divisor.
+ */
+export const ALL_PLATFORMS: PlatformName[] = [
+  'claude',
+  'openai',
+  'perplexity',
+  'gemini',
+  'serpapi_google',
+]
 export type SentimentValue = 'positive' | 'neutral' | 'negative' | 'not_mentioned'
 export type ScanStatus = 'pending' | 'running' | 'complete' | 'failed'
 export type SubscriptionTier = 'one_time' | 'monthly' | 'annual'

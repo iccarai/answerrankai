@@ -4,11 +4,11 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'AnswerRank AI — TSO (Total Search Optimization)',
   description:
-    'Dominate AI platforms: ChatGPT, Perplexity, Gemini, and Google AI Overviews. Get audited, get optimized, get visibility.',
+    'Dominate AI platforms: Claude, ChatGPT, Perplexity, Gemini, Google AI Overviews, and Google Search. Get audited, get optimized, get visibility.',
   openGraph: {
     title: 'AnswerRank AI',
     description:
-      'Total Search Optimization for AI platforms. Audit your AI visibility across 4 platforms.',
+      'Total Search Optimization for AI platforms. Audit your AI visibility across 6 platforms.',
     url: 'https://answerrank.ai',
     type: 'website',
   },
