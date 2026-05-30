@@ -523,7 +523,7 @@ export default function AnswerRankLanding() {
               Someone just asked{" "}
               <span style={{ display: "inline" }}>
                 <span className="ar-ticker-wrap">
-                  <span className="ar-ticker-inner-5 ar-serif" style={{ color: "#fff", display: "block" }}>
+                  <span className="ar-ticker-inner-5 ar-serif" style={{ color: "#e8ff4a", display: "block" }}>
                     {HERO_NAMES.map(n => <span key={n} style={{ display: "block" }}>{n}</span>)}
                   </span>
                 </span>
