@@ -45,35 +45,27 @@ Users pay **$297 for a one-time TSO Audit** or **$1,497/month for Done-For-You m
 
 ---
 
-## Build Status (May 2026)
+## Build Status
 
-### ✅ Complete
-- **Phase 1 (Engine)**: All `lib/` files built (`aiQuery.ts`, `scoreEngine.ts`, `fixListEngine.ts`, `reportBuilder.ts`, supabase clients)
-- **Phase 2 (Database)**: Schema, RLS policies, seed data defined in `ARCHITECTURE.md`
-- **Types**: `types/index.ts` with all platform, business, report types
-- **Landing page**: `AnswerRankAI-Landing-v3.tsx` ready to integrate
+> Keep this section honest — it drifts fast. Verify against the actual tree before trusting it.
 
-### ❌ Not Built (In Order of Priority)
+### ✅ Built
+- **Next.js scaffold**: `package.json`, `tsconfig.json`, `next.config.js`, `next-env.d.ts`, `app/layout.tsx`, `app/globals.css`, `vercel.json` (cron configured)
+- **Phase 1 (Engine)**: All `lib/` business logic — `aiQuery.ts`, `scoreEngine.ts`, `fixListEngine.ts`, `reportBuilder.ts`, `stripe.ts`, and the three supabase clients
+- **Phase 2 (Database)**: `supabase/migrations/001_initial_schema.sql` (schema + RLS)
+- **Types**: `types/index.ts`
+- **Landing page**: `app/page.tsx` (live) + `app/report-preview/page.tsx`
+- **Phase 3 (most API routes)**: `app/api/scan`, `report/[scanId]`, `report/[scanId]/pdf`, `scans`, `stripe/webhook`, `cron/rescan`, plus the shared helper `app/api/utils/scanExecution.ts`
 
-1. **Next.js App Structure** — `package.json`, `tsconfig.json`, `next.config.ts`, `app/layout.tsx`, `app/globals.css`
-2. **Landing Page** — Copy `AnswerRankAI-Landing-v3.tsx` into `app/page.tsx`
-3. **Phase 3 (API Routes)** — All handlers in `app/api/`:
-   - `scan/route.ts` — POST: initiate scan
-   - `report/[scanId]/route.ts` — GET: fetch report
-   - `report/[scanId]/pdf/route.ts` — GET: generate PDF
-   - `scans/route.ts` — GET: scan history
-   - `stripe/checkout/route.ts` — POST: create session
-   - `stripe/webhook/route.ts` — POST: handle Stripe events
-   - `cron/rescan/route.ts` — POST: monthly rescan
-4. **Phase 4 (Client State)** — `store/useReportStore.ts` (Zustand), results page data binding, dashboard
-5. **Phase 5 (PDF/Email)** — `lib/pdf.ts`, Resend integration
-6. **Phase 6 (QA/Deploy)** — Stripe CLI testing, Vercel Cron config, environment setup
+### ❌ Not Yet Built
+1. **Phase 4 (Client pages + state)** — `app/scan/page.tsx` (onboarding form), `app/results/[scanId]/page.tsx`, `app/dashboard/page.tsx`, and `store/useReportStore.ts` (Zustand). This is the current frontier.
+2. **Auth UI** — sign-in/sign-up flows
+3. **Resend email** — monthly report + transactional sends
 
-### ❌ Infrastructure Not Set Up
-- Supabase project (need project URL, anon key, service role key)
-- Resend account (need domain verification for `answerrank.ai`)
-- Google PSE (need API key + engine ID)
-- Stripe price IDs (`price_audit_297`, `price_dfy_1497`)
+> Note: there is **no** `app/api/stripe/checkout/route.ts`. Checkout-session creation is folded into `app/api/scan/route.ts` (it creates the business + scan records, then the Stripe session, and returns `checkoutUrl`). PDF generation lives in the route `app/api/report/[scanId]/pdf/route.ts`, not a `lib/pdf.ts`.
+
+### Infrastructure / accounts
+Verify which of these are actually provisioned before assuming a scan can run end-to-end: Supabase project, Resend domain (`answerrank.ai`), Stripe price IDs (`stripe_price_audit_297`, `stripe_price_dfy_1497`), and AIO provider keys. See `ARCHITECTURE.md`.
 
 ---
 
@@ -136,39 +128,38 @@ Final score: weighted sum, clamped 0–100, rounded to integer.
 | `lib/supabase/client.ts` | Browser client (auth, realtime) | ✅ Built |
 | `lib/supabase/server.ts` | Server client for API routes | ✅ Built |
 | `lib/supabase/admin.ts` | Service role client for webhooks, cron | ✅ Built |
-| `lib/pdf.ts` | PDF generation via react-pdf | ❌ Not built (Phase 5) |
-| `lib/stripe.ts` | Stripe instance + helpers | ❌ Not built (Phase 3) |
+| `lib/stripe.ts` | Stripe instance + `createCheckoutSession()` helper | ✅ Built |
+| `app/api/utils/scanExecution.ts` | Shared scan-execution orchestration used by routes | ✅ Built |
 | `types/index.ts` | All TypeScript types and enums | ✅ Built |
 
 ### Pages & Routes
 
 ```
 app/
-  ├── page.tsx                       ← Landing (copy v3 here)
-  ├── scan/page.tsx                  ← Onboarding form (Phase 4)
-  ├── results/[scanId]/page.tsx      ← Results view (Phase 4)
-  ├── dashboard/page.tsx             ← Client dashboard (Phase 4)
-  ├── report-preview/page.tsx        ← Static preview
-  ├── layout.tsx                     ← Root layout (Phase 1)
-  ├── globals.css                    ← Global styles (Phase 1)
+  ├── page.tsx                       ← Landing (live)               ✅
+  ├── report-preview/page.tsx        ← Static sample report          ✅
+  ├── layout.tsx                     ← Root layout                   ✅
+  ├── globals.css                    ← Global styles                 ✅
+  ├── scan/page.tsx                  ← Onboarding form               ❌ Phase 4
+  ├── results/[scanId]/page.tsx      ← Results view                  ❌ Phase 4
+  ├── dashboard/page.tsx             ← Client dashboard              ❌ Phase 4
   └── api/
-      ├── scan/route.ts              ← POST: initiate scan (Phase 3)
-      ├── report/[scanId]/route.ts   ← GET: fetch report (Phase 3)
-      ├── report/[scanId]/pdf/route.ts ← GET: generate PDF (Phase 5)
-      ├── scans/route.ts             ← GET: scan history (Phase 3)
-      ├── stripe/checkout/route.ts   ← POST: create session (Phase 3)
-      ├── stripe/webhook/route.ts    ← POST: Stripe events (Phase 3)
-      └── cron/rescan/route.ts       ← POST: monthly rescan (Phase 3)
+      ├── scan/route.ts              ← POST: create business+scan, return Stripe checkoutUrl  ✅
+      ├── report/[scanId]/route.ts   ← GET: fetch report             ✅
+      ├── report/[scanId]/pdf/route.ts ← GET: generate PDF           ✅
+      ├── scans/route.ts             ← GET: scan history             ✅
+      ├── stripe/webhook/route.ts    ← POST: Stripe events           ✅
+      ├── cron/rescan/route.ts       ← POST: monthly rescan          ✅
+      └── utils/scanExecution.ts     ← Shared scan orchestration     ✅
 
-store/
-  └── useReportStore.ts              ← Zustand state (Phase 4)
-
-lib/                                 ✅ All built
-
-types/                               ✅ All built
-
-ARCHITECTURE.md                       ← Source of truth
+store/useReportStore.ts              ← Zustand state                 ❌ Phase 4
+lib/                                 ← Business logic                ✅
+types/index.ts                       ← All types                     ✅
+supabase/migrations/                 ← Schema + RLS                   ✅
+ARCHITECTURE.md                      ← Source of truth
 ```
+
+> All API route handlers declare `export const dynamic = 'force-dynamic'` — keep this on new routes (they read auth/cookies and must not be statically cached).
 
 ---
 
@@ -176,57 +167,13 @@ ARCHITECTURE.md                       ← Source of truth
 
 ### Prerequisites
 
-Node.js 18+ and npm/yarn. Project structure not yet initialized.
-
-### Initialize Next.js Project
-
-```bash
-cd "C:\Users\Richie Onions\answerrankai"
-
-# Option A: Create from scratch with create-next-app
-npx create-next-app@latest . --typescript --tailwind --app --no-git
-
-# Option B: Manual setup
-npm init -y
-npm install next react react-dom typescript @types/react @types/node
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
+Node.js 18+. The project is already initialized — `npm install` to restore dependencies, then `npm run dev`.
 
 ### Environment Setup
 
-Copy `.env.local.template` to `.env.local` and fill in all keys (see `ARCHITECTURE.md`). Without these, API routes will fail:
+Copy `.env.local.template` → `.env.local` and fill in the values. All env-var names are **UPPERCASE** across code, `.env.local`, and Vercel (`NEXT_PUBLIC_*` must be exact-case uppercase or Next.js won't expose it to the browser). The AIO provider is **SerpAPI** (`SERPAPI_KEY`) — Google PSE was removed. See `.env.local.template` for the full list.
 
-```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-
-# AI Providers
-ANTHROPIC_API_KEY=
-PERPLEXITY_API_KEY=
-GOOGLE_AI_API_KEY=
-
-# Google PSE
-GOOGLE_PSE_API_KEY=
-GOOGLE_PSE_ENGINE_ID=
-
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-STRIPE_PRICE_AUDIT_297=
-STRIPE_PRICE_DFY_1497=
-
-# Resend
-RESEND_API_KEY=
-RESEND_FROM_EMAIL=reports@answerrank.ai
-
-# App
-NEXT_PUBLIC_APP_URL=https://answerrank.ai
-CRON_SECRET=[generate a random string]
-```
+Vercel: env vars live in the `answerrankai` project (Production has the full set; `SERPAPI_KEY` is also in Development; Preview is not yet populated). After changing any Vercel env var, **redeploy** for it to take effect.
 
 ### Common Commands
 
@@ -240,8 +187,8 @@ npm run build              # Compile for production
 # Type checking
 npx tsc --noEmit          # Check for type errors
 
-# Linting (if configured)
-npm run lint              # Run ESLint
+# Linting (configured: next lint)
+npm run lint              # Run ESLint via eslint-config-next
 
 # Format
 npx prettier --write .    # Format all files
@@ -410,6 +357,10 @@ Always use quoted paths due to space in username:
 cd "C:\Users\Richie Onions\answerrankai"
 ```
 
+### Build Artifacts Are Tracked in Git (gotcha)
+
+`.next/` is listed in `.gitignore` but ~90 `.next/` files were committed before the ignore rule was added, so they remain tracked. A `git add -A` will sweep churned build artifacts into your commit. Either stage only the source files you changed, or run `git rm -r --cached .next` once to untrack them.
+
 ### Approve Permission Prompts
 
 During Claude Code sessions, approve all permission prompts (option 1).
@@ -429,12 +380,13 @@ Follow the global rules in `~/.claude/rules/common/coding-style.md`:
 
 ## Immediate Next Steps
 
-1. **Initialize Next.js** — `npm init` + install dependencies, set up `tsconfig.json`, `next.config.ts`
-2. **Copy landing page** — `AnswerRankAI-Landing-v3.tsx` → `app/page.tsx`
-3. **Set up environment** — Create `.env.local` from template
-4. **Verify types** — Run `tsc --noEmit` to check types in existing files
-5. **Build Phase 3 API routes** — All `app/api/*` handlers
-6. **Build Phase 4 client state** — Zustand store, results/dashboard pages
+The engine and most API routes exist. The frontier is **Phase 4 (client pages + state)**:
+
+1. **`store/useReportStore.ts`** — Zustand store for report state
+2. **`app/scan/page.tsx`** — onboarding form that POSTs to `/api/scan` and redirects to the returned `checkoutUrl`
+3. **`app/results/[scanId]/page.tsx`** — loading + results view bound to `/api/report/[scanId]`
+4. **`app/dashboard/page.tsx`** — client dashboard over `/api/scans`
+5. **Auth UI** — sign-in/sign-up wired to the Supabase client
 
 See `ARCHITECTURE.md` for detailed build phases and accounts that need setup.
 
